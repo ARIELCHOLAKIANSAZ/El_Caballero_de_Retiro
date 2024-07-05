@@ -17,7 +17,7 @@ func _unhandled_input(event):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		if(is_using_weapon):
-			weapon.rotation() 
+			weapon.rotation_degrees = Vector3(-90,0,0) 
 			pivot.rotate_x(-event.relative.y * rotation_speed)
 			ppivot.rotate_y(-event.relative.x * rotation_speed)
 			print(event.relative.y)
