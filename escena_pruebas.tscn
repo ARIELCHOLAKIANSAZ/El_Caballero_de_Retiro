@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://c0lbdirfa7ui"]
+
+[ext_resource type="PackedScene" uid="uid://ci3f35dro420d" path="res://El caballero.tscn" id="1_ayq8k"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d7dg1"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_5dj1f"]
+sky_material = SubResource("ProceduralSkyMaterial_d7dg1")
+
+[sub_resource type="Environment" id="Environment_1hd24"]
+background_mode = 2
+sky = SubResource("Sky_5dj1f")
+tonemap_mode = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_tyfu2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8670e"]
+size = Vector3(6.70886, 1, 7.19678)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1hd24")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0194769, 9.53674e-07, 0.0241394)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(6.59071, 0, 0, 0, 1, 0, 0, 0, 7.09152, 0, 0, 0)
+mesh = SubResource("BoxMesh_tyfu2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_8670e")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("1_ayq8k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.63673, 0)
