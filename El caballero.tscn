@@ -26,15 +26,15 @@ mesh = SubResource("CapsuleMesh_sg10e")
 skeleton = NodePath("../CollisionShape3D")
 
 [node name="Camera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.549009, -0.406341)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.549009, 3.98774)
 
 [node name="PivotPivot" type="Node3D" parent="Camera"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.406)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.98809)
 
 [node name="WeaponPivot" type="Node3D" parent="Camera/PivotPivot"]
 
 [node name="Weapon" type="AnimatableBody3D" parent="Camera/PivotPivot/WeaponPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.011, -1.373)
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, -0.011, -1.373)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Camera/PivotPivot/WeaponPivot/Weapon"]
 transform = Transform3D(0.25, 0, 0, 0, 0.75, 0, 0, 0, 0.25, 0, 0.75, 0)

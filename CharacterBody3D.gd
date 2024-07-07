@@ -17,10 +17,8 @@ func _unhandled_input(event):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		if(is_using_weapon):
-			weapon.rotation_degrees = Vector3(-90,0,0) 
 			pivot.rotate_x(-event.relative.y * rotation_speed)
 			ppivot.rotate_y(-event.relative.x * rotation_speed)
-			print(event.relative.y)
 		else:
 			camera1.rotate_x(-event.relative.y * rotation_speed)
 			character.rotate_y(-event.relative.x * rotation_speed)
@@ -31,8 +29,12 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _process(delta):
 	if(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)):
+		if(is_using_weapon == false):
+			weapon.rotation_degrees = Vector3(-90,0,0) 
 		is_using_weapon = true
 	else:
+		if(is_using_weapon == true):
+			weapon.rotation_degrees = Vector3(-15,0,0) 
 		is_using_weapon = false
 		
 
