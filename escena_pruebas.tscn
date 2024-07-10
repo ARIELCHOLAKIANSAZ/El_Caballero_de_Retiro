@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://c0lbdirfa7ui"]
 
-[ext_resource type="PackedScene" uid="uid://ci3f35dro420d" path="res://El caballero.tscn" id="1_ayq8k"]
+[ext_resource type="PackedScene" uid="uid://4q32rkb80gs4" path="res://ElCaballero.tscn" id="1_fpmia"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d7dg1"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -38,5 +38,5 @@ mesh = SubResource("BoxMesh_tyfu2")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_8670e")
 
-[node name="CharacterBody3D" parent="." instance=ExtResource("1_ayq8k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.63673, 0)
+[node name="TheKnight" parent="." instance=ExtResource("1_fpmia")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.95276, 0)

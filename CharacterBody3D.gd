@@ -18,23 +18,33 @@ func _unhandled_input(event):
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		if(is_using_weapon):
 			pivot.rotate_x(-event.relative.y * rotation_speed)
+			
 			ppivot.rotate_y(-event.relative.x * rotation_speed)
+			pivot.rotation.x = clamp(pivot.rotation.x, deg_to_rad(-30),deg_to_rad(30))
+			ppivot.rotation.y = clamp(ppivot.rotation.y, deg_to_rad(-50),deg_to_rad(50))
 		else:
 			camera1.rotate_x(-event.relative.y * rotation_speed)
 			character.rotate_y(-event.relative.x * rotation_speed)
+			pivot.rotation_degrees(camera1.rotation_degrees)
 			camera1.rotation.x = clamp(camera1.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _process(delta):
+	print(pivot.rotation_degrees.x)
 	if(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)):
 		if(is_using_weapon == false):
-			weapon.rotation_degrees = Vector3(-90,0,0) 
-		is_using_weapon = true
+			is_using_weapon = true
+			pivot.rotation_degrees = Vector3(0,0,0)
+			ppivot.rotation_degrees = Vector3(0,0,0)
+			weapon.rotation_degrees = Vector3(-90,0,0)
 	else:
 		if(is_using_weapon == true):
-			weapon.rotation_degrees = Vector3(-15,0,0) 
+			is_using_weapon = false
+			pivot.rotation_degrees = Vector3(0,0,0)
+			ppivot.rotation_degrees = Vector3(0,-30,0)
+			weapon.rotation_degrees = Vector3(-15,0,0)
 		is_using_weapon = false
 		
 

@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://4q32rkb80gs4"]
+
+[ext_resource type="Script" path="res://ElCaballero.gd" id="1_0vltg"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_7nlpk"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xkwdc"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_tq6w8"]
+radius = 0.125
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_i1ysa"]
+
+[node name="TheKnight" type="Node3D"]
+script = ExtResource("1_0vltg")
+
+[node name="Body" type="CharacterBody3D" parent="."]
+
+[node name="POV" type="Camera3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.417109, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Body"]
+mesh = SubResource("CapsuleMesh_7nlpk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Body"]
+shape = SubResource("CapsuleShape3D_xkwdc")
+
+[node name="yPivot" type="Node3D" parent="."]
+
+[node name="xPivot" type="Node3D" parent="yPivot"]
+
+[node name="Weapon" type="AnimatableBody3D" parent="yPivot/xPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="yPivot/xPivot/Weapon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_tq6w8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="yPivot/xPivot/Weapon"]
+transform = Transform3D(0.25, 0, 0, 0, 1, 0, 0, 0, 0.25, 0, 1, 0)
+mesh = SubResource("CylinderMesh_i1ysa")
