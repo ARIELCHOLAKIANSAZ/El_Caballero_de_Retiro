@@ -1,11 +1,10 @@
 extends Node3D
-
-
 @onready var camera = $Body/POV
 @onready var character = $Body
 @onready var weapon = $Body/POV/yPivot/xPivot/Weapon
 @onready var xpivot = $Body/POV/yPivot/xPivot
 @onready var ypivot = $Body/POV/yPivot
+@onready var wcol : bool
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 var rotation_speed : float = 0.005
@@ -20,10 +19,12 @@ func _unhandled_input(event):
 		if(is_using_weapon):
 			xpivot.rotate_x(-event.relative.y * rotation_speed)
 			ypivot.rotate_y(-event.relative.x * rotation_speed)
-			xpivot.rotation.x = clamp(xpivot.rotation.x, deg_to_rad(-30),deg_to_rad(30)) 
+			# I have to clamp THIS right here
+			xpivot.rotation.x = clamp(xpivot.rotation.x, deg_to_rad(-30),deg_to_rad(90)) 
 			ypivot.rotation.y = clamp(ypivot.rotation.y, deg_to_rad(-50),deg_to_rad(50)) 
+			if(wcol):
+				character.rotate_y(-event.relative.x * rotation_speed)
 		else:
-			camera.rotate_x(-event.relative.y * rotation_speed)
 			character.rotate_y(-event.relative.x * rotation_speed)
 			
 			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90))
@@ -46,6 +47,7 @@ func _process(_delta):
 			ypivot.rotation_degrees = Vector3(0,-30,0)
 			weapon.rotation_degrees = Vector3(-15,0,0)
 		is_using_weapon = false
+	print(wcol)
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -69,3 +71,10 @@ func _physics_process(delta):
 	
 	
 	character.move_and_slide()
+
+func _on_weapon_collision_body_entered(body):
+	wcol = true
+
+
+func _on_weapon_collision_body_exited(body):
+	wcol = false
