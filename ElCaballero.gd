@@ -1,9 +1,11 @@
 extends Node3D
 @onready var camera = $Body/POV
 @onready var character = $Body
-@onready var weapon = $Body/POV/yPivot/xPivot/Weapon
+@onready var weapon = $Body/POV/yPivot/xPivot/yWeaPivot/xWeaPivot/Weapon
 @onready var xpivot = $Body/POV/yPivot/xPivot
 @onready var ypivot = $Body/POV/yPivot
+@onready var xweapiv = $Body/POV/yPivot/xPivot/yWeaPivot/xWeaPivot
+@onready var yweapiv = $Body/POV/yPivot/xPivot/yWeaPivot
 @onready var wcol : bool
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -19,9 +21,13 @@ func _unhandled_input(event):
 		if(is_using_weapon):
 			xpivot.rotate_x(-event.relative.y * rotation_speed)
 			ypivot.rotate_y(-event.relative.x * rotation_speed)
+			xweapiv.rotate_x(-event.relative.y * rotation_speed)
+			yweapiv.rotate_y(-event.relative.x * rotation_speed)
 			# I have to clamp THIS right here
 			xpivot.rotation.x = clamp(xpivot.rotation.x, deg_to_rad(-30),deg_to_rad(90)) 
 			ypivot.rotation.y = clamp(ypivot.rotation.y, deg_to_rad(-50),deg_to_rad(50)) 
+			xweapiv.rotation.x = clamp(xweapiv.rotation.x, deg_to_rad(-10),deg_to_rad(90)) 
+			yweapiv.rotation.y = clamp(yweapiv.rotation.y, deg_to_rad(-50),deg_to_rad(50)) 
 			if(wcol):
 				character.rotate_y(-event.relative.x * rotation_speed)
 		else:
@@ -39,12 +45,16 @@ func _process(_delta):
 			is_using_weapon = true
 			xpivot.rotation_degrees = Vector3(0,0,0)
 			ypivot.rotation_degrees = Vector3(0,0,0)
+			xweapiv.rotation_degrees = Vector3(0,0,0)
+			yweapiv.rotation_degrees = Vector3(0,0,0)
 			weapon.rotation_degrees = Vector3(-90,0,0)
 	else:
 		if(is_using_weapon == true):
 			is_using_weapon = false
 			xpivot.rotation_degrees = Vector3(0,0,0)
 			ypivot.rotation_degrees = Vector3(0,-30,0)
+			xweapiv.rotation_degrees = Vector3(0,0,0)
+			yweapiv.rotation_degrees = Vector3(0,0,0)
 			weapon.rotation_degrees = Vector3(-15,0,0)
 		is_using_weapon = false
 	print(wcol)
@@ -72,9 +82,7 @@ func _physics_process(delta):
 	
 	character.move_and_slide()
 
-func _on_weapon_collision_body_entered(body):
+func _on_weapon_collision_body_entered(_body):
 	wcol = true
-
-
-func _on_weapon_collision_body_exited(body):
+func _on_weapon_collision_body_exited(_body):
 	wcol = false
