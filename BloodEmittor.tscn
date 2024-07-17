@@ -12,11 +12,12 @@ initial_velocity_max = 20.0
 gravity = Vector3(0, 0, 0)
 
 [sub_resource type="BoxMesh" id="BoxMesh_mwjqq"]
+size = Vector3(0.1, 0.1, 0.1)
 
 [node name="GPUParticles3D" type="GPUParticles3D"]
-transform = Transform3D(0.999991, -0.00416443, -0.000448507, 0.00416441, 0.999991, -4.80318e-05, 0.000448704, 4.61596e-05, 1, 0, 0, 0)
+transform = Transform3D(0.0999991, -0.000416443, -4.48508e-05, 0.000416441, 0.0999991, -4.80278e-06, 4.48704e-05, 4.61596e-06, 0.1, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_dthfj")
 amount = 100
-trail_enabled = true
+collision_base_size = 0.0
 process_material = SubResource("ParticleProcessMaterial_r0d0b")
 draw_pass_1 = SubResource("BoxMesh_mwjqq")

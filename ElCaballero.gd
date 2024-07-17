@@ -1,17 +1,15 @@
-extends Node3D
-@onready var camera = $Body/POV
-@onready var character = $Body
-@onready var weapon = $Body/POV/yPivot/xPivot/yWeaPivot/xWeaPivot/zWeaPivot/Weapon
-@onready var xpivot = $Body/POV/yPivot/xPivot
-@onready var ypivot = $Body/POV/yPivot
-@onready var xweapiv = $Body/POV/yPivot/xPivot/yWeaPivot/xWeaPivot
-@onready var yweapiv = $Body/POV/yPivot/xPivot/yWeaPivot
-@onready var zweapiv = $Body/POV/yPivot/xPivot/yWeaPivot/xWeaPivot/zWeaPivot
-@onready var pointer = $Body/POV/yPivot/xPivot/yWeaPivot/xWeaPivot/ball
-@onready var wcol : bool
-@onready var ray = $Body/POV/yPivot/xPivot/yWeaPivot/xWeaPivot/zWeaPivot/Weapon/RayCast3D
-var avgx : Array = [0,0,0,0,0]
-var avgy : Array = [0,0,0,0,0]
+extends CharacterBody3D
+@onready var camera = $POV
+@onready var weapon = $POV/yPivot/xPivot/yWeaPivot/xWeaPivot/zWeaPivot/Weapon
+@onready var xpivot = $POV/yPivot/xPivot
+@onready var ypivot = $POV/yPivot
+@onready var xweapiv = $POV/yPivot/xPivot/yWeaPivot/xWeaPivot
+@onready var yweapiv = $POV/yPivot/xPivot/yWeaPivot
+@onready var zweapiv = $POV/yPivot/xPivot/yWeaPivot/xWeaPivot/zWeaPivot
+@onready var pointer = $POV/yPivot/xPivot/yWeaPivot/xWeaPivot/ball
+var wcol : bool
+var avgx : Array = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+var avgy : Array = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 var travgx : float = 0
 var travgy : float = 0
 const SPEED = 5.0
@@ -34,7 +32,9 @@ func _unhandled_input(event):
 			xweapiv.rotation.x = clamp(xweapiv.rotation.x, deg_to_rad(-10),deg_to_rad(90)) 
 			yweapiv.rotation.y = clamp(yweapiv.rotation.y, deg_to_rad(-50),deg_to_rad(50)) 
 			if(wcol):
-				character.rotate_y(-event.relative.x * rotation_speed)
+				camera.rotate_x(-event.relative.y * rotation_speed)
+				rotate_y(-event.relative.x * rotation_speed)
+				camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 			if(event.relative.x != 0):
 				avgx.pop_at(0)
 				avgx.append(event.relative.x)
@@ -43,18 +43,18 @@ func _unhandled_input(event):
 				avgy.append(event.relative.y)
 			for i in avgx:
 				travgx += i
-			travgx /= 50
+			travgx /= 200
 			for i in avgy:
 				travgy += i
-			travgy /= -50
+			travgy /= -200
 			pointer.position = Vector3(travgx,travgy,0)
 			zweapiv.look_at(pointer.global_position)
 			zweapiv.rotation.x = 0 
 			zweapiv.rotation.y = 0 
 			zweapiv.rotation_degrees.z += 90
 		else:
-			character.rotate_y(-event.relative.x * rotation_speed)
-			
+			rotate_y(-event.relative.x * rotation_speed)
+			camera.rotate_x(-event.relative.y * rotation_speed)
 			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -79,26 +79,25 @@ func _process(_delta):
 
 func _physics_process(delta):
 	# Add the gravity.
-	if not character.is_on_floor():
-		character.velocity.y -= gravity * delta
-
+	if not is_on_floor():
+		velocity.y -= gravity * delta
 	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and character.is_on_floor():
-		character.velocity.y = JUMP_VELOCITY
+	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+		
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
-		character.velocity.x = character.rotation.x * SPEED
-		character.velocity.z = character.rotation.z * SPEED
+		velocity.x = direction.x * SPEED
+		velocity.z = direction.z * SPEED
 	else:
-		character.velocity.x = move_toward(character.velocity.x, 0, SPEED)
-		character.velocity.z = move_toward(character.velocity.z, 0, SPEED)
-	
-	
-	character.move_and_slide()
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.z = move_toward(velocity.z, 0, SPEED)
+
+	move_and_slide()
 
 func _on_weapon_collision_body_entered(_body):
 	wcol = true

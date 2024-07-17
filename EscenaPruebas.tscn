@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://cr5yc7ceq0ld5"]
+
+[ext_resource type="PackedScene" uid="uid://bnor7bdiaovot" path="res://PunchingBag.tscn" id="1_bnu5x"]
+[ext_resource type="PackedScene" uid="uid://4q32rkb80gs4" path="res://ElCaballero.tscn" id="2_mncpn"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fwypb"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_2w38l"]
+sky_material = SubResource("ProceduralSkyMaterial_fwypb")
+
+[sub_resource type="Environment" id="Environment_qllho"]
+background_mode = 2
+sky = SubResource("Sky_2w38l")
+tonemap_mode = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_bqg16"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_cnl67"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_qllho")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+mesh = SubResource("PlaneMesh_bqg16")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_cnl67")
+
+[node name="StaticBody3D2" parent="." instance=ExtResource("1_bnu5x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.614422, 0.971378, 2.80569)
+
+[node name="Body" parent="." instance=ExtResource("2_mncpn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.2434, 0)

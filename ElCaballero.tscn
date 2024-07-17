@@ -1,7 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://4q32rkb80gs4"]
+[gd_scene load_steps=9 format=3 uid="uid://4q32rkb80gs4"]
 
 [ext_resource type="Script" path="res://ElCaballero.gd" id="1_0vltg"]
 [ext_resource type="PackedScene" uid="uid://b5mchbo3ln0mt" path="res://sword.fbx" id="2_ss00x"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_y3u2s"]
+radius = 0.1
+height = 0.2
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_tq6w8"]
 height = 1.86822
@@ -17,67 +21,62 @@ size = Vector3(1.94958, 2.61969, 0.124512)
 [sub_resource type="BoxShape3D" id="BoxShape3D_y06yv"]
 size = Vector3(1, 2.24951, 0.263794)
 
-[node name="TheKnight" type="Node3D"]
+[node name="Body" type="CharacterBody3D"]
 script = ExtResource("1_0vltg")
 
-[node name="Body" type="CharacterBody3D" parent="."]
-
-[node name="POV" type="Camera3D" parent="Body"]
+[node name="POV" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.417109, 0)
 
-[node name="yPivot" type="Node3D" parent="Body/POV"]
+[node name="yPivot" type="Node3D" parent="POV"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.248166, -0.333484)
 rotation_order = 0
 
-[node name="xPivot" type="Node3D" parent="Body/POV/yPivot"]
+[node name="xPivot" type="Node3D" parent="POV/yPivot"]
 
-[node name="yWeaPivot" type="Node3D" parent="Body/POV/yPivot/xPivot"]
+[node name="yWeaPivot" type="Node3D" parent="POV/yPivot/xPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0209873, 5.96046e-08, -1.11903)
 
-[node name="xWeaPivot" type="Node3D" parent="Body/POV/yPivot/xPivot/yWeaPivot"]
+[node name="xWeaPivot" type="Node3D" parent="POV/yPivot/xPivot/yWeaPivot"]
 
-[node name="ball" type="Node3D" parent="Body/POV/yPivot/xPivot/yWeaPivot/xWeaPivot"]
+[node name="ball" type="Node3D" parent="POV/yPivot/xPivot/yWeaPivot/xWeaPivot"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
 
-[node name="zWeaPivot" type="Node3D" parent="Body/POV/yPivot/xPivot/yWeaPivot/xWeaPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="POV/yPivot/xPivot/yWeaPivot/xWeaPivot/ball"]
+mesh = SubResource("SphereMesh_y3u2s")
 
-[node name="Weapon" type="CharacterBody3D" parent="Body/POV/yPivot/xPivot/yWeaPivot/xWeaPivot/zWeaPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="zWeaPivot" type="Node3D" parent="POV/yPivot/xPivot/yWeaPivot/xWeaPivot"]
+
+[node name="Weapon" type="Area3D" parent="POV/yPivot/xPivot/yWeaPivot/xWeaPivot/zWeaPivot"]
 disable_mode = 2
 collision_layer = 10
 collision_mask = 2
-motion_mode = 1
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Body/POV/yPivot/xPivot/yWeaPivot/xWeaPivot/zWeaPivot/Weapon"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="POV/yPivot/xPivot/yWeaPivot/xWeaPivot/zWeaPivot/Weapon"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18581, 0)
 shape = SubResource("CylinderShape3D_tq6w8")
 
-[node name="Root Scene" parent="Body/POV/yPivot/xPivot/yWeaPivot/xWeaPivot/zWeaPivot/Weapon" instance=ExtResource("2_ss00x")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0.172107, 0)
+[node name="Root Scene" parent="POV/yPivot/xPivot/yWeaPivot/xWeaPivot/zWeaPivot/Weapon" instance=ExtResource("2_ss00x")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0.212892, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Body"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_7nlpk")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Body"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_xkwdc")
 
-[node name="WeaponCollision" type="Area3D" parent="Body"]
+[node name="WeaponCollision" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.417, -0.0596145)
 collision_layer = 0
 collision_mask = 8
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Body/WeaponCollision"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WeaponCollision"]
 transform = Transform3D(0.642788, 0, -0.766044, 0, 1, 0, 0.766044, 0, 0.642788, -0.617803, 0, -0.179496)
 shape = SubResource("BoxShape3D_i7wv6")
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="Body/WeaponCollision"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="WeaponCollision"]
 transform = Transform3D(0.642788, 0, 0.766044, 0, 1, 0, -0.766044, 0, 0.642788, 0.618, 0, -0.179)
 shape = SubResource("BoxShape3D_i7wv6")
 
-[node name="CollisionShape3D3" type="CollisionShape3D" parent="Body/WeaponCollision"]
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="WeaponCollision"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.146404, 0.0888062)
 shape = SubResource("BoxShape3D_y06yv")
-
-[connection signal="body_entered" from="Body/WeaponCollision" to="." method="_on_weapon_collision_body_entered"]
-[connection signal="body_exited" from="Body/WeaponCollision" to="." method="_on_weapon_collision_body_exited"]
